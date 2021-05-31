@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Book = require('../models').Book;
 const sequelize = Book.sequelize;
+const {Op} = require('sequelize');
 
 express.static('../public');
 
@@ -24,6 +25,7 @@ const searchBooks = async (query) => {
     }
   })
   console.log(books);
+  return books;
 }
 
 /* GET home / books page. */
@@ -41,8 +43,8 @@ router.get('/books', async function(req, res, next) {
 });
 
 // GET route for user search
-router.get('/books/search?:search', async function (req, res, next){
-  let search = req.body;
+router.get('/books?:search', async function (req, res, next){
+  let search = req.query.search;
   console.log(search);
 })
 

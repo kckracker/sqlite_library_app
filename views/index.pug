@@ -11,12 +11,10 @@ block content
     p
         a(class='button' href='/books/new') Create New Book
     br
-    form(method='get' action='/books/search')
-        div
-            - let searchValue = '';
-            -//Inserting inputs for searchbar
-            input(id='searchText' placeholder='Search books' type='text')
-            button(class='search-button') Search
+    form(method='get' action='/books')
+        -//Inserting inputs for searchbar
+        input(id='searchText' placeholder='Search books' type='text' onSubmit=searchBooks())
+        button(class='search-button') Search
     table
         thead
             tr
