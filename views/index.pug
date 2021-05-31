@@ -1,0 +1,42 @@
+extends layout
+
+block title 
+    title #{title}
+
+block content
+    header  
+        h1(class='title') #{title}
+    p Welcome to the site of Genericville's premier library, #{title}
+    br
+    p
+        a(class='button' href='/books/new') Create New Book
+    br
+    form(method='get' action='/books/search')
+        div
+            - let searchValue = '';
+            -//Inserting inputs for searchbar
+            input(id='searchText' placeholder='Search books' type='text')
+            button(class='search-button') Search
+    table
+        thead
+            tr
+                th Title 
+                th Author 
+                th Genre 
+                th Year 
+        tbody
+            each book in books
+                tr              
+                    td
+                        a(href=`/books/${book.id}`)=book.title
+                    td=book.author
+                    td=book.genre
+                    td=book.year
+    
+    nav 
+    - var n = 1;
+    - var pages = Math.ceil(allBooks.length / perPage) + 1;
+        ul 
+            while n < pages 
+                li(class='pages') 
+                    a(href=`/books/page=${n}`)= n++

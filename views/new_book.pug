@@ -1,0 +1,41 @@
+extends layout 
+
+block title 
+    title #{title}
+
+block content 
+    h1(class='title') #{title}
+        form(method="post" action="/books/new")
+            p
+                label(for="title") Title
+                input(name="title" type="text" id="title")
+            
+            p
+                label(for="author") Author
+                input(name="author" type="text" id="author")
+            
+            p
+                label(for="genre") Genre
+                select(name="genre" id="genre")
+                    option(value="Fiction") Fiction
+                    option(value="Science Fiction") Science Fiction
+                    option(value="Mystery") Mystery
+                    option(value="Horror") Horror
+                    option(value="Thriller") Thriller
+                    option(value="Non Fiction") Non Fiction
+                    option(value="Fantasy") Fantasy
+                    option(value="Classic") Classic 
+                    option(value="Romance") Romance
+                    option(value="Historical Fiction") Historical Fiction
+                    option(value="Humor") Humor
+            
+            p
+                label(for="year") Year
+                input(name="year" type="text" id="year")
+            
+            p
+                input(type="submit" value="Create New Book")
+            p
+                a(class="button" href="/") Cancel
+        
+        
