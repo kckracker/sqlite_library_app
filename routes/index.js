@@ -64,8 +64,52 @@ router.get('/books/search', async function (req, res, next){
     offset: (page * perPage) - perPage
   });
   // limit and offset for next page based on the number per page
-  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: true})
+  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: true, search})
+})
 
+router.get('/books/search?search=:search/page=:page', async function (req, res, next){
+  let search = req.query.search;
+  const perPage = 8;
+  let page = req.params.page || 1;
+  const allBooks = await Book.findAll({
+    where: {
+      [Op.or]: [
+        { title: {
+        [Op.like]: '%' + search + '%'
+        }},
+        { author: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { genre: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { year: {
+          [Op.like]: '%' + search + '%'
+        }}]
+    }
+  });
+  const books = await Book.findAll({
+    where: {
+      [Op.or]: [
+        { title: {
+        [Op.like]: '%' + search + '%'
+        }},
+        { author: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { genre: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { year: {
+          [Op.like]: '%' + search + '%'
+        }}]
+    },
+    order: sequelize.col('id'),
+    limit: perPage,
+    offset: (page * perPage) - perPage
+  });
+  // limit and offset for next page based on the number per page
+  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: true, search})
 })
 
 // Get route implementing multiple pages of results

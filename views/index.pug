@@ -38,17 +38,27 @@ block content
                         td=book.author
                         td=book.genre
                         td=book.year
-        
-        nav     
-        - var n = 1;
-        - var pages = Math.ceil(allBooks.length / perPage) + 1;
-            ul 
-                li(class='pages') Pages:
-                while n < pages 
-                    li(class='pages numbers')
-                        a(href=`/books/page=${n}`)= n++
+        if searchPage === true
+            nav     
+            - var n = 1;
+            - var pages = Math.ceil(allBooks.length / perPage) + 1;
+                ul 
+                    li(class='pages') Pages:
+                    while n < pages 
+                        li(class='pages numbers')
+                            a(href=`search?search=${search}/page=${n}`)= n++
+                p
+                    a(class = 'button' href='/') Home 
+        else 
+            nav     
+            - var n = 1;
+            - var pages = Math.ceil(allBooks.length / perPage) + 1;
+                ul 
+                    li(class='pages') Pages:
+                    while n < pages 
+                        li(class='pages numbers')
+                            a(href=`/books/page=${n}`)= n++
     else 
         h3 Sorry, no results returned!
-    - if(searchPage === true) 
         p
             a(class = 'button' href='/') Home 
