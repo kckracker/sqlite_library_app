@@ -6,28 +6,6 @@ const {Op} = require('sequelize');
 
 express.static('../public');
 
-const searchBooks = async (query) => {
-  const books = await Book.findAndCountAll({
-    where: {
-      [Op.or]: [
-        { title: {
-        [Op.like]: `${query}`
-        }},
-        { author: {
-          [Op.like]: `${query}`
-        }},
-        { genre: {
-          [Op.like]: `${query}`
-        }},
-        { year: {
-          [Op.like]: `${query}`
-        }}]
-    }
-  })
-  console.log(books);
-  return books;
-}
-
 /* GET home / books page. */
 router.get('/books', async function(req, res, next) {
   const perPage = 8;
@@ -38,21 +16,62 @@ router.get('/books', async function(req, res, next) {
     limit: perPage,
     offset: (page * perPage) - perPage
   });
+  console.log(books.length);
   // limit and offset for next page based on the number per page
-  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchBooks})
+  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: false})
 });
 
 // GET route for user search
-router.get('/books?:search', async function (req, res, next){
+router.get('/books/search', async function (req, res, next){
   let search = req.query.search;
-  console.log(search);
+  const perPage = 8;
+  let page = req.params.page || 1;
+  const allBooks = await Book.findAll({
+    where: {
+      [Op.or]: [
+        { title: {
+        [Op.like]: '%' + search + '%'
+        }},
+        { author: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { genre: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { year: {
+          [Op.like]: '%' + search + '%'
+        }}]
+    }
+  });
+  const books = await Book.findAll({
+    where: {
+      [Op.or]: [
+        { title: {
+        [Op.like]: '%' + search + '%'
+        }},
+        { author: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { genre: {
+          [Op.like]: '%' + search + '%'
+        }},
+        { year: {
+          [Op.like]: '%' + search + '%'
+        }}]
+    },
+    order: sequelize.col('id'),
+    limit: perPage,
+    offset: (page * perPage) - perPage
+  });
+  // limit and offset for next page based on the number per page
+  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: true})
+
 })
 
 // Get route implementing multiple pages of results
 router.get('/books/page=:page', async function (req, res, next){
   const perPage = 8;
   let page = req.params.page || 1;
-  console.log(page);
   const allBooks = await Book.findAll();
   const books = await Book.findAll({
     order: sequelize.col('id'),

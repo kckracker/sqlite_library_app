@@ -1,10 +1,11 @@
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
+  font: 18px "Raleway", sans-serif;
+  background-color: #e3e5e3;
 }
 
 a {
-  color: #019875;
+  color: #4f7978;
   text-decoration: none;
   font-weight: bold;
   transition: 0.4s;
@@ -14,13 +15,13 @@ a {
     color: black;
   }
 
-a.button, input[type=submit] {
+a.button, input[type=submit], button {
   color: white;
-  background: #019875;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #275039;
+  font-family: "Raleway", Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
   font-size: 14px;
-  border-radius: 2px;
+  border-radius: 1.5em;
   cursor: pointer;
 }
 
@@ -34,8 +35,8 @@ input[type=submit] {
   border: 0;
 }
 
-  a.button:hover, input[type=submit]:hover {
-    background-color: #01b189;
+  a.button:hover, input[type=submit]:hover, button:hover {
+    background-color: #4f7978;
   }
 
 p {
@@ -55,7 +56,7 @@ h2 {
 }
 
 th {
-  border-bottom: 2px solid #D8B493;
+  border-bottom: 2px solid #f9b299;
   text-align: left;
   padding: 5px 20px 5px 10px;
 }
@@ -65,7 +66,7 @@ tr {
 }
 
 tr:nth-child(2n) {
-  background: #E7E7E7;
+  background: #eee;
 }
 
 td {
@@ -101,4 +102,42 @@ input[type=text] {
   min-height: 142px;
   min-width: 100%;
   background-image: url('../images/book_coffee.jpg');
+  border-radius: 1.5em 1.5em 0em 0em;
+}
+
+.pages {
+  display:inline;
+  margin: 3px;
+  padding: 1.5px;
+}
+
+.numbers {
+  border-bottom: 2px solid #f9b299;
+}
+
+header {
+  border-bottom: 2px solid #f9b299;
+  border-top: 2px solid #f9b299;
+  background-color: #4f7978;
+  color: white;
+  text-align:center;
+  border-radius: 0em 0em 1.5em 1.5em;
+}
+
+svg.search-icon {
+  padding: 0px;
+  margin: 0px;
+}
+
+button.search-button {
+  padding-left:3px;
+  padding-top:0px;
+  padding-right:8px;
+  padding-bottom:8px;
+  margin: 0px;
+  border-radius: 0em 1.5em 1.5em 0em;
+}
+
+#searchText {
+  border-radius: 1.5em 0em 0em 1.5em;
 }

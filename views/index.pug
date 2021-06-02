@@ -6,35 +6,49 @@ block title
 block content
     header  
         h1(class='title') #{title}
-    p Welcome to the site of Genericville's premier library, #{title}
+        p Welcome to the site of Genericville's premier library, #{title}
     br
     p
         a(class='button' href='/books/new') Create New Book
     br
-    form(method='get' action='/books')
+    form(method='get' action='/books/search')
         -//Inserting inputs for searchbar
-        input(id='searchText' placeholder='Search books' type='text' onSubmit=searchBooks())
-        button(class='search-button') Search
-    table
-        thead
-            tr
-                th Title 
-                th Author 
-                th Genre 
-                th Year 
-        tbody
-            each book in books
-                tr              
-                    td
-                        a(href=`/books/${book.id}`)=book.title
-                    td=book.author
-                    td=book.genre
-                    td=book.year
-    
-    nav 
-    - var n = 1;
-    - var pages = Math.ceil(allBooks.length / perPage) + 1;
-        ul 
-            while n < pages 
-                li(class='pages') 
-                    a(href=`/books/page=${n}`)= n++
+        input(name='search' id='searchText' placeholder='Search books' type='text' )
+        button(class='search-button')
+            //- SVG image created using tool at https://editor.method.ac/ - image saved in public images folder as well.
+            svg(xmlns="http://www.w3.org/2000/svg" width="30" height="25" class='search-icon')
+                g
+                title Layer 1
+                g(id="svg_4")
+                ellipse(stroke-width="3" ry="8" rx="13" id="svg_2" cy="10" cx="15" stroke="#000" fill="#fff")
+                line(id="svg_3" y2="18" x2="22" y1="24" x1="31" stroke-width="3" stroke="#000" fill="none")
+    if books.length > 0           
+        table
+            thead
+                tr
+                    th Title 
+                    th Author 
+                    th Genre 
+                    th Year 
+            tbody
+                each book in books
+                    tr              
+                        td
+                            a(href=`/books/${book.id}`)=book.title
+                        td=book.author
+                        td=book.genre
+                        td=book.year
+        
+        nav     
+        - var n = 1;
+        - var pages = Math.ceil(allBooks.length / perPage) + 1;
+            ul 
+                li(class='pages') Pages:
+                while n < pages 
+                    li(class='pages numbers')
+                        a(href=`/books/page=${n}`)= n++
+    else 
+        h3 Sorry, no results returned!
+    - if(searchPage === true) 
+        p
+            a(class = 'button' href='/') Home 
