@@ -1,0 +1,71 @@
+extends layout 
+
+block title 
+    title title
+
+block content 
+    if book
+        h1(class='title') #{title}
+        form(action=`/books/${book.id}` method="post")
+            h2(class="error") Oops 
+            ul(class="error") 
+                each err in errors 
+                    li #{err.message}
+            p
+            label(for="title") Title
+            input(name="title" type="text" id="title" value=`${book.title}`)
+            p
+            label(for="author") Author
+            input(name="author" type="text" id="author" value=`${book.author}`)
+            p
+            label(for="genre") Genre
+            input(name="genre" type="text" id="genre" value=`${book.genre}`)
+            p
+            label(for="year") Year
+            input(name="year" type="text" id="year" value=`${book.year}`)
+            p
+            input(type="submit" value="Update")
+            
+        form(method="post" action=`/books/${book.id}/delete` onSubmit="return confirm('Do you really want to delete this book?');")
+            p
+                a(class="button" href="/") Cancel
+            p
+                input(type="submit" value="Delete Book")
+    else 
+        h1(class='title') #{title}
+        form(method="post" action="/books/new")
+            h2(class="error") Oops 
+            ul(class="error") 
+                each err in errors 
+                    li #{err.message}
+            p
+                label(for="title") Title
+                input(name="title" type="text" id="title")
+            
+            p
+                label(for="author") Author
+                input(name="author" type="text" id="author")
+            
+            p
+                label(for="genre") Genre
+                select(name="genre" id="genre")
+                    option(value="Fiction") Fiction
+                    option(value="Science Fiction") Science Fiction
+                    option(value="Mystery") Mystery
+                    option(value="Horror") Horror
+                    option(value="Thriller") Thriller
+                    option(value="Non Fiction") Non Fiction
+                    option(value="Fantasy") Fantasy
+                    option(value="Classic") Classic 
+                    option(value="Romance") Romance
+                    option(value="Historical Fiction") Historical Fiction
+                    option(value="Humor") Humor
+            
+            p
+                label(for="year") Year
+                input(name="year" type="text" id="year")
+            
+            p
+                input(type="submit" value="Create New Book")
+            p
+                a(class="button" href="/") Cancel

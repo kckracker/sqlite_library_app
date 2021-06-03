@@ -16,33 +16,15 @@ router.get('/books', async function(req, res, next) {
     limit: perPage,
     offset: (page * perPage) - perPage
   });
-  console.log(books.length);
   // limit and offset for next page based on the number per page
   res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: false})
 });
 
-// GET route for user search
+// GET route for base user search
 router.get('/books/search', async function (req, res, next){
   let search = req.query.search;
   const perPage = 8;
   let page = req.params.page || 1;
-  const allBooks = await Book.findAll({
-    where: {
-      [Op.or]: [
-        { title: {
-        [Op.like]: '%' + search + '%'
-        }},
-        { author: {
-          [Op.like]: '%' + search + '%'
-        }},
-        { genre: {
-          [Op.like]: '%' + search + '%'
-        }},
-        { year: {
-          [Op.like]: '%' + search + '%'
-        }}]
-    }
-  });
   const books = await Book.findAll({
     where: {
       [Op.or]: [
@@ -59,57 +41,10 @@ router.get('/books/search', async function (req, res, next){
           [Op.like]: '%' + search + '%'
         }}]
     },
-    order: sequelize.col('id'),
-    limit: perPage,
-    offset: (page * perPage) - perPage
+    order: sequelize.col('id')
   });
   // limit and offset for next page based on the number per page
-  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: true, search})
-})
-
-router.get('/books/search?search=:search/page=:page', async function (req, res, next){
-  let search = req.query.search;
-  const perPage = 8;
-  let page = req.params.page || 1;
-  const allBooks = await Book.findAll({
-    where: {
-      [Op.or]: [
-        { title: {
-        [Op.like]: '%' + search + '%'
-        }},
-        { author: {
-          [Op.like]: '%' + search + '%'
-        }},
-        { genre: {
-          [Op.like]: '%' + search + '%'
-        }},
-        { year: {
-          [Op.like]: '%' + search + '%'
-        }}]
-    }
-  });
-  const books = await Book.findAll({
-    where: {
-      [Op.or]: [
-        { title: {
-        [Op.like]: '%' + search + '%'
-        }},
-        { author: {
-          [Op.like]: '%' + search + '%'
-        }},
-        { genre: {
-          [Op.like]: '%' + search + '%'
-        }},
-        { year: {
-          [Op.like]: '%' + search + '%'
-        }}]
-    },
-    order: sequelize.col('id'),
-    limit: perPage,
-    offset: (page * perPage) - perPage
-  });
-  // limit and offset for next page based on the number per page
-  res.render('index', {title: 'The Book Case', books , perPage, allBooks, searchPage: true, search})
+  res.render('index', {title: 'The Book Case', books , perPage, searchPage: true, search})
 })
 
 // Get route implementing multiple pages of results
@@ -130,15 +65,24 @@ router.get('/books/page=:page', async function (req, res, next){
  * GET new book form page
  */
 router.get('/books/new', async function (req, res, next) {
-    res.render('new_book', { title: "Add A Book" })
+    res.render('new-book', { title: "Add A Book" })
 })
 
 /**
  * POST new book to library database
  */
 router.post('/books/new', async function(req, res, next) {
-  Book.create(req.body);
-  res.redirect('/books');
+  try {
+    await Book.create(req.body);
+    res.redirect('/books');
+  } catch(error) {
+    if (error.name === "SequelizeValidationError"){
+      res.render('form-error', {errors: error.errors, title: "Add A Book"})
+    } else {
+      next()
+    }
+  }
+  
 })
 
 /**
@@ -147,7 +91,11 @@ router.post('/books/new', async function(req, res, next) {
  router.get('/books/:id', async function (req, res, next) {
   const id = req.params.id;
   const book = await Book.findByPk(id);
-  res.render('update_book', { book:book.dataValues })
+  if(book !== null){
+    res.render('update-book', { book })
+  } else{
+    next()
+  }
 })
 
 /**
@@ -160,8 +108,16 @@ router.post('/books/new', async function(req, res, next) {
   record.author = req.body.author;
   record.genre = req.body.genre;
   record.year = req.body.year;
-  await record.save({fields: ['title', 'author', 'genre','year']});
-  res.redirect('/books');
+  try{
+    await record.save({fields: ['title', 'author', 'genre','year']});
+    res.redirect('/books');
+  } catch(error){
+    if (error.name === "SequelizeValidationError"){
+      res.render('form-error', {book: record, errors: error.errors})
+    } else {
+      next()
+    }
+  }  
 })
 
 /**
@@ -173,6 +129,7 @@ router.post('/books/new', async function(req, res, next) {
   book.destroy();
   res.redirect('/books');
 })
+
 
 /**
  * REDIRECT to books page from index
