@@ -22,6 +22,7 @@ block content
                 g(id="svg_4")
                 ellipse(stroke-width="3" ry="8" rx="13" id="svg_2" cy="10" cx="15" stroke="#000" fill="#fff")
                 line(id="svg_3" y2="18" x2="22" y1="24" x1="31" stroke-width="3" stroke="#000" fill="none")
+    //- Inserting conditional to determine if any results were yielded from search. Only displaying the table if so, else displaying a friendly message to notify the search yeilded no results.
     if books.length > 0  
         if searchPage === true  
             h3 Showing results for "#{search}"       
@@ -59,6 +60,7 @@ block content
                             td=book.author
                             td=book.genre
                             td=book.year
+        //- Placing conditional to display pagination for the index view or else to leave out on search results.
         if allBooks
             nav     
             - var n = 1;
@@ -66,7 +68,7 @@ block content
                 ul 
                     li(class='pages') Pages:
                     while n < pages 
-                        li(class='pages numbers')
+                        li(class=('pages numbers'))
                             a(href=`/books/page=${n}`)= n++
     else 
         h3 Sorry, no results returned!

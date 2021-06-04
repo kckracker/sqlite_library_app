@@ -4,6 +4,7 @@ block title
     title title
 
 block content 
+    //- Using string interpolation to pass in the values from the Book instance supplied to the view.
     h1(class='title') #{title}
     form(action=`/books/${book.id}` method="post")
         p

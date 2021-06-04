@@ -4,11 +4,13 @@ block title
     title title
 
 block content 
+    //- Adding conditional to determine if Book instance is received from call to load either the 'update-book' template or else to load the 'new-book' template if not supplied.
     if book
         h1(class='title') #{title}
         form(action=`/books/${book.id}` method="post")
             h2(class="error") Oops 
             ul(class="error") 
+                //- Looping over errors supplied using Pug iteration to generate a new li element for each error on the page.
                 each err in errors 
                     li #{err.message}
             p
