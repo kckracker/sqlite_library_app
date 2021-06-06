@@ -42,15 +42,15 @@ block content
                     li #{err.message}
             p
                 label(for="title") Title
-                input(name="title" type="text" id="title")
+                input(name="title" type="text" id="title" value=`${newBook.title}`)
             
             p
                 label(for="author") Author
-                input(name="author" type="text" id="author")
+                input(name="author" type="text" id="author" value=`${newBook.author}`)
             
             p
                 label(for="genre") Genre
-                select(name="genre" id="genre")
+                select(name="genre" id="genre" value=`${newBook.genre}`)
                     option(value="Fiction") Fiction
                     option(value="Science Fiction") Science Fiction
                     option(value="Mystery") Mystery
@@ -65,7 +65,7 @@ block content
             
             p
                 label(for="year") Year
-                input(name="year" type="text" id="year")
+                input(name="year" type="text" id="year" value=`${newBook.year}`)
             
             p
                 input(type="submit" value="Create New Book")
