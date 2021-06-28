@@ -29,7 +29,7 @@ ___
 - Generated SVG for use with search bar
 - Created classes to frame pagination list in an inline view  below table and underline page numbers
 
-[^1] This application requires you to run the command "npm start" in your console at the project's folder location then point your browser to "localhost:3000" to view.
+[^1]: This application requires you to run the command "npm start" in your console at the project's folder location then point your browser to "localhost:3000" to view.
 
 
 
